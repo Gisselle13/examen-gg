@@ -1,0 +1,11 @@
+config:
+  target: 'http://localhost:3000'
+  phases:
+    - duration: 10                # Duración total de la prueba en segundos
+      arrivalRate: 1000           # 1000 solicitudes por segundo (concurrentes)
+scenarios:
+  - flow:
+      - get:
+          url: '/usuarios'
+
+# artillery run load-test.yml
