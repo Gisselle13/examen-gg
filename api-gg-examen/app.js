@@ -22,13 +22,18 @@ app.use(errorHandler);
 app.use(morgan('dev')); // Registra las solicitudes en la consola
 
 // Conexión a la base de datos
-mongoose.connect(process.env.DB_URL, { useNewUrlParser: true, useUnifiedTopology: true })
+// mongoose.connect(process.env.DB_URL, { useNewUrlParser: true, useUnifiedTopology: true })
+//   .then(() => console.log('Conexión a la base de datos exitosa'))
+//   .catch(err => {
+//     console.error('Error al conectar a la base de datos:', err);
+//     console.log('URL de la base de datos:', process.env.DB_URL);
+//   }
+// );
+
+
+mongoose.connect('mongodb://127.0.0.1:27017/user_management')
   .then(() => console.log('Conexión a la base de datos exitosa'))
-  .catch(err => {
-    console.error('Error al conectar a la base de datos:', err);
-    console.log('URL de la base de datos:', process.env.DB_URL);
-  }
-);
+  .catch((err) => console.error('Error al conectar a la base de datos:', err));
 
 
 app.use(xss());
