@@ -4,7 +4,7 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 const helmet = require('helmet');
 const morgan = require('morgan');
-const xss = require('xss-clean');
+//const xss = require('xss-clean');
 const userRoutes = require('./routes/userRoutes');
 const errorHandler = require('./middlewares/errorHandler');
 const app = express();
@@ -35,7 +35,29 @@ mongoose.connect('mongodb://127.0.0.1:27017/user_management')
   .catch((err) => console.error('Error al conectar a la base de datos:', err));
 
 
-app.use(xss());
+//app.use(xss());
+// app.use((req, res, next) => {
+//   if (req.body) {
+//     const xss = require('xss-clean');
+//     xss()(req, res, next);
+//   } else {
+//     next();
+//   }
+// });
+
+const sanitizeHtml = require('sanitize-html');
+
+app.use((req, res, next) => {
+  if (req.body) {
+    for (let key in req.body) {
+      if (typeof req.body[key] === 'string') {
+        req.body[key] = sanitizeHtml(req.body[key]);
+      }
+    }
+  }
+  next();
+});
+
 
 // Rutas
 app.use('/usuarios', userRoutes);
